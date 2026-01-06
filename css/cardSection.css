@@ -1,0 +1,94 @@
+.card-wrapper {
+  width: 100%;
+}
+
+/* Card */
+.card-container {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+/* Image / GIF */
+.card-container .img-box {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dark overlay for readability */
+.card-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.6),
+    rgba(15, 23, 42, 0.85)
+  );
+  z-index: 1;
+}
+
+/* Text overlay */
+.card-container .text-box {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+/* Hide text on hover */
+.card-container:hover .text-box {
+  opacity: 0;
+}
+
+/* Category label (top-left) */
+.card-container .first-text {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: linear-gradient(135deg, #6C4AB6, #4D96FF);
+  color: white;
+  padding: 6px 18px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(77, 150, 255, 0.45);
+}
+
+/* Main text (center) */
+.card-container .second-text {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #6C4AB6, #4D96FF);
+  color: white;
+  padding: 16px 32px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(77, 150, 255, 0.5);
+}
+
+/* Animated language text */
+.card-container .second-text .two::after {
+  animation: language 2s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+/* Animation */
+@keyframes language {
+  0%   { content: "With English"; }
+  33%  { content: "Avec le Français"; }
+  66%  { content: "Mit Deutsch"; }
+  100% { content: "With English"; }
+}

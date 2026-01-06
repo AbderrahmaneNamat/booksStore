@@ -1,0 +1,22 @@
+.founders-wrapper {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  padding: 40px;
+  background: #f5f5f7;
+  flex-wrap: wrap; /* add this so cards wrap on small screens */
+}
+
+.card {
+  background: white;
+  padding: 24px;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1 1 300px; /* allows cards to grow/shrink responsively */
+}
+
+/* ... rest of CSS stays the same ... */

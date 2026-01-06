@@ -1,0 +1,173 @@
+/* =========================
+   FILTER – DESKTOP
+========================= */
+
+.filter-container {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  background: #444;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+/* Filter group */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filter-group label {
+  font-size: 14px;
+  color: #eee;
+}
+
+.filter-group select {
+  padding: 6px;
+  border-radius: 4px;
+  border: none;
+}
+
+/* Filter button */
+.filter-button {
+  padding: 8px 16px;
+  background: #00b894;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* =========================
+   FILTER – MOBILE OVERLAY
+========================= */
+.test{
+  z-index:60 ;
+}
+.filter-container-small {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 50;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 1rem;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+body.no-scroll {
+  overflow: hidden;
+}
+/* active mobile filter */
+.filter-container-small.enter-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* exit button */
+.exit-button-container {
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+/* inner mobile filter */
+.filter-container-small .filter-container {
+  flex-direction: column;
+  background: #555;
+}
+
+/* =========================
+   RESPONSIVE RULES
+========================= */
+
+@media (max-width: 900px) {
+  /* hide desktop filter */
+  .filter-container {
+    display: none;
+  }
+}
+
+@media (min-width: 901px) {
+  /* hide mobile overlay */
+  .filter-container-small {
+    display: none;
+  }
+}
+
+/* =========================
+   PRODUCTS GRID
+========================= */
+
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* =========================
+   PRODUCT CARD
+========================= */
+
+.product-card {
+  background-color: #777;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* image */
+.product-image {
+  height: 220px;
+  background: #666;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* body */
+.product-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: white;
+}
+
+/* categories */
+.category-container {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.category-container span {
+  background-color: rgb(0, 155, 104);
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+/* view button */
+.view-btn {
+  margin-top: auto;
+  align-self: flex-end;
+  text-decoration: none;
+  color: white;
+  background: #222;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
