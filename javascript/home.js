@@ -1,6 +1,5 @@
 
 
-import { products } from "./data.js";
 import { login, renderAuth } from "./login.js";
 import { ProductPage } from "./product.js";
 import { ProductsPage } from "./products.js";
@@ -9,9 +8,16 @@ import { ul } from "./renderCountriesSection.js";
 import { renderHomePage } from "./renderHomePage.js";
 
 import { SliderBooks } from "./SliderBooks.js";
-import { productsSmall } from "./smallResolution/productsSmall.js";
+import { initMobileFilter } from "./smallResolution/mobileFilter.js";
+import { ReductionItemsButtonsController } from "./ReductionItemsSection.js";
+import { getTimeLeftInMonth, NewYearReduction, StepsHandler, textLength } from "./NewYearReduction.js";
+import { books } from "./data.js";
+import { SearchResult } from "./SearchResult.js";
+import { UsercartsFunction, UserCartsPage } from "./UserCartsPage.js";
+
 
 const app = document.getElementById("app");
+
 
 const categories = [
   { id: 0, category: "Strategie", icon: "img1.jpg", color: "#FF6B6B" },          // red-ish for strategy
@@ -35,7 +41,7 @@ const bestsellingBooks = [
 // =====FILTERING BY CATEGORIE && UPDATETIME
 function showProducts(selectedCategory = "all", selectedTime = "all") {
   app.innerHTML = ProductsPage(selectedCategory, selectedTime);
-  productsSmall();
+
   const filterButton = document.querySelector(".filter-button");
   if (filterButton) {
     filterButton.addEventListener("click", () => {
@@ -48,7 +54,7 @@ function showProducts(selectedCategory = "all", selectedTime = "all") {
 // Render ProductsPage and attach filter listener
 function showProduct(idp) {
   // Find the book/product by id
-  const product = products.find(book => book.id === idp);
+  const product = books.booksSection.find(book => book.id === idp);
 
   if (!product) {
     app.innerHTML = "<p>Product not found.</p>";
@@ -57,17 +63,36 @@ function showProduct(idp) {
 
   // Render product page
           app.innerHTML = ProductPage(idp)
-}
+        }
+        
+        
+        // For filter links in category dropdowns
+        window.filterProducts = function (category) {
+          window.location.hash = `#products/${category}`;
+        };
+  // Searching
+let isSearching=false;
+const searchInput = document.querySelector(".search-container input");
+searchInput.addEventListener(("input"), () =>{
+  const value = searchInput.value
+  if(value.length>0){
+    isSearching=true;
+    app.innerHTML=SearchResult(value)
+  }
+  else{
+    isSearching=false
+    router()
 
+  }
 
-// For filter links in category dropdowns
-window.filterProducts = function (category) {
-  window.location.hash = `#products/${category}`;
-};
+})
 
 // Router
+
 function router() {
+  if(isSearching) return;
   const hash = window.location.hash;
+
 
   if (hash.startsWith("#product/")) {
     const parts = hash.split("/"); // e.g., #products/123
@@ -82,21 +107,117 @@ function router() {
     }
 
   } else if (hash === "#products") {
-    showProducts();
+      showProducts();
+
   } 
+    else if(hash === "#carts"){
+      app.innerHTML=UserCartsPage()
+       UsercartsFunction()
+
+  }
    else if (hash === "#login") {
     renderAuth()
   }
   else {
-    // Render slider & homepage
+
     app.innerHTML=renderHomePage();
     ul()
     SliderBooks("third-section")
     SliderBooks("fourth-section")
-    productsSmall()
-  }
-} 
+    initMobileFilter()
+    ReductionItemsButtonsController()
+  const pad = (n) => String(n).padStart(2, '0')
+   document.documentElement.style.setProperty(
+    "--text-length",`${textLength}ch`
+   );
+   StepsHandler()
+
+    setInterval(()=>{
+      const timer=document.querySelector(".timer-container")
+      if(!timer) return;
+      const {days,hours,minutes,seconds}=getTimeLeftInMonth()
+      timer.innerHTML=`
+      <div class="timer">${days}<span>D</span>  ${pad(hours)}<span>H</span> ${pad(minutes)}<span>M</span> ${pad(seconds)}<span>S</span></div>
+      `
+    },1000)
 
 
-window.addEventListener("hashchange", router);
-window.addEventListener("load", router);
+
+
+    
+    // =======books listening=====  deleted
+    //   const observer=new IntersectionObserver((entries)=>{
+      // entries.forEach((entrie)=>{
+        //   if(entrie.isIntersecting && entrie.target.classList.contains("booksReduction-wrapper")){
+          //       const categories = document.querySelectorAll(
+            //         ".booksReduction-wrapper .book-categories .book-categorie");
+            
+            //       categories.forEach((cat) => {
+    //         cat.classList.add("activecategory");
+    //       });
+    //     } 
+    //   })
+    // })
+    // const booksSection=document.querySelector(".booksReduction-wrapper")
+    // if(booksSection){
+      //   observer.observe(booksSection)
+      // }
+    }
+  } 
+  
+  
+  window.addEventListener("hashchange", router);
+  window.addEventListener("load", router);
+  
+  // carts listener
+   
+      document.addEventListener("click", (e) =>{
+      console.log(e.target)
+      if(e.target.closest(".add-cart")){
+        const idSection=e.target.dataset.id
+        console.log(e.target.dataset.id)
+        let allbooks=Object.values(books).flat()
+        let bookFounded=allbooks.find((book)=>book.idSection === idSection)
+        if(bookFounded){
+          const existedBook=userCarts.find((exist)=>exist.idSection === idSection)  
+            if(existedBook){
+              console.log("alreadyexist")
+            }      
+            if(!existedBook){
+              userCarts.push({...bookFounded})
+              localStorage.setItem("carts-item",JSON.stringify(userCarts))
+              console.log(userCarts)
+            }
+        }
+      }
+      
+
+    })
+
+  // delete cart from chosed carts
+
+  document.addEventListener("click", (e)=>{
+    if(e.target.closest("delete-cart")){
+      selectedItem =e.target.dataset.delete;
+      
+    }
+  })
+  
+  export const  userCarts=JSON.parse(localStorage.getItem("carts-item"))||[]
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

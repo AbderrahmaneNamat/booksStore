@@ -1,8 +1,8 @@
-import { products } from "./data.js";
+import { books } from "./data.js";
 
 export function ProductsPage(selectedCategory = "all", selectedTime = "all") {
 
-  const filtered = products.filter(p => {
+  const filtered = books.booksSection.filter(p => {
     const matchCategory =
       selectedCategory === "all" || p.categories.includes(selectedCategory);
     const matchTime =
@@ -10,69 +10,67 @@ export function ProductsPage(selectedCategory = "all", selectedTime = "all") {
     return matchCategory && matchTime;
   });
 
-  const categories = ["all", ...new Set(products.flatMap(p => p.categories))];
-  const times = ["all", ...new Set(products.map(p => p.lastUpdate))];
+  const categories = ["all", ...new Set(books.booksSection.flatMap(p => p.categories))];
+  const times = ["all", ...new Set(books.booksSection.map(p => p.lastUpdate))];
+
+  const renderOptions = (items, selected) =>
+    items.map(v =>
+      `<option value="${v}" ${v === selected ? "selected" : ""}>${v}</option>`
+    ).join("");
 
   return `
-    <!-- Filter bar -->
-    <div class="filter-container">
+    <!-- DESKTOP FILTER -->
+    <div class="filter-container desktop-filter">
       <div class="filter-group">
         <label>Category</label>
-        <select id="categoryFilter">
-          ${categories.map(cat => `
-            <option value="${cat}" ${cat === selectedCategory ? "selected" : ""}>
-              ${cat}
-            </option>
-          `).join("")}
+        <select data-filter="category">
+          ${renderOptions(categories, selectedCategory)}
         </select>
       </div>
 
       <div class="filter-group">
         <label>Last Update</label>
-        <select id="timeFilter">
-          ${times.map(t => `
-            <option value="${t}" ${t === selectedTime ? "selected" : ""}>
-              ${t}
-            </option>
-          `).join("")}
+        <select data-filter="time">
+          ${renderOptions(times, selectedTime)}
         </select>
       </div>
 
-      <button class="filter-button">Filter</button>
+      <button class="filter-button" data-action="apply-filter">Filter</button>
     </div>
-    <!-- Filter bar small resolution -->
+
+    <!-- MOBILE FILTER BUTTON -->
+    <div class="mobile-filter-bar">
+      <button id="openFilterBtn" class="mobile-filter-btn">
+        ☰ Filters
+      </button>
+    </div>
+
+    <!-- MOBILE FILTER OVERLAY -->
     <div class="filter-container-small">
-      <div class="exit-button-container">Exit</div>
-      <div class="filter-container">
+      <div class="exit-button-container" id="closeFilterBtn">✕</div>
 
-      <div class="filter-group">
-        <label>Category</label>
-        <select id="categoryFilter">
-          ${categories.map(cat => `
-            <option value="${cat}" ${cat === selectedCategory ? "selected" : ""}>
-              ${cat}
-            </option>
-          `).join("")}
-        </select>
-      </div>
+      <div class="filter-container mobile-filter">
+        <div class="filter-group">
+          <label>Category</label>
+          <select data-filter="category">
+            ${renderOptions(categories, selectedCategory)}
+          </select>
+        </div>
 
-      <div class="filter-group">
-        <label>Last Update</label>
-        <select id="timeFilter">
-          ${times.map(t => `
-            <option value="${t}" ${t === selectedTime ? "selected" : ""}>
-              ${t}
-            </option>
-          `).join("")}
-        </select>
+        <div class="filter-group">
+          <label>Last Update</label>
+          <select data-filter="time">
+            ${renderOptions(times, selectedTime)}
+          </select>
+        </div>
+
+        <button class="filter-button" data-action="apply-filter">
+          Apply Filters
+        </button>
       </div>
     </div>
 
-
-
-      <button class="filter-button">Filter</button>
-    </div>
-    <!-- Products -->
+    <!-- PRODUCTS -->
     <div class="products-container">
       ${filtered.map(p => `
         <div class="product-card">

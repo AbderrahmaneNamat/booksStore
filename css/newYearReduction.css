@@ -1,0 +1,158 @@
+.newYearReduction-wrapper {
+  width: 100%;
+  height: 80vh;
+  background: linear-gradient(135deg, #f8f6ff, #efeaff);
+  display: flex;
+  align-items: center;
+}
+
+.newYearReduction-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- LEFT SIDE (BOOKS) ---------- */
+
+.newYearReduction-container .part1 {
+  width: 50%;
+  background: radial-gradient(circle at top, #2d2f48, #1e1e2f);
+  position: relative;
+}
+
+.newYearReduction-container .img-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.newYearReduction-container .part1 img {
+  position: absolute;
+  width: 200px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 25px 40px rgba(0,0,0,.35);
+  animation: appear 1s ease-out forwards;
+  transform: rotate(-4deg);
+}
+
+.newYearReduction-container  .nmb1 { left: 8%; top: 20%; transition: all 0.5s ease; }
+.newYearReduction-container .nmb2 { left: 28%; top: 25%; animation-delay: .4s; transition: all 0.5s ease;}
+.newYearReduction-container  .nmb3 { left: 48%; top: 30%; animation-delay: .8s; transition: all 0.5s ease;}
+
+.newYearReduction-container  .nmb1:hover { left: 8%; top: 10%; z-index: 10; }
+.newYearReduction-container  .nmb2:hover { left: 28%; top: 10%; z-index: 10; }
+.newYearReduction-container  .nmb3:hover { left: 48%; top: 10%; z-index: 10; }
+
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) rotate(-4deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(-4deg);
+  }
+}
+
+/* ---------- RIGHT SIDE (TEXT + TIMER) ---------- */
+
+.newYearReduction-container .part2 {
+  width: 50%;
+  background: linear-gradient(135deg, #6c5ce7, #8f7cfb);
+  color: var(--light);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 60px;
+}
+
+.newYearReduction-container .part2 .text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.newYearReduction-container .part2 .text-container > div:first-child {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.newYearReduction-container .part2 .text-appear-by-steps {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+  display: inline-block;
+
+  --chars: 1;
+  animation: reveal 4s steps(var(--chars), end) forwards;
+}
+
+@keyframes reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* ---------- TIMER ---------- */
+
+.newYearReduction-container .part2 .timer-container {
+  font-size: 28px;
+  background: rgba(0,0,0,.25);
+  padding: 14px 28px;
+  border-radius: 14px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.newYearReduction-container .part2 .timer span {
+  font-size: 16px;
+  margin-left: 4px;
+  color: var(--accent);
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 600px) {
+  .newYearReduction-wrapper {
+    height: auto;
+  }
+
+  .newYearReduction-container {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+  }
+
+  .newYearReduction-container .part1, .newYearReduction-container .part2 {
+    width: 100%;
+  }
+
+  .newYearReduction-container  .part1 {
+    height: 55vh;
+  }
+
+  .newYearReduction-container  .part2 {
+    padding: 30px;
+    gap: 20px;
+
+
+  }
+  .newYearReduction-container .part2 .timer-container{
+    font-size: 16px;
+  }
+
+.newYearReduction-container .part2 .text-container > div:first-child{
+  font-size: 20px;
+  margin-left: 160px;
+}
+  .text-appear-by-steps{
+    font-size: 9px;
+    margin-left: 150px;
+    white-space: wrap;
+
+  }
+}

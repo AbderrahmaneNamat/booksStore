@@ -1,10 +1,11 @@
 .founders-wrapper {
+  height: 80vh;
   display: flex;
   gap: 40px;
   justify-content: center;
   padding: 40px;
   background: #f5f5f7;
-  flex-wrap: wrap; /* add this so cards wrap on small screens */
+  flex-wrap: wrap;
 }
 
 .card {

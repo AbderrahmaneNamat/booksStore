@@ -1,0 +1,106 @@
+.founded-books-container{
+display: flex;
+flex-wrap: wrap;
+gap: 15px;
+}
+/* BOX  */
+.founded-books-container .founded-book-box{
+    width: 220px;
+    height: 290px;
+    background-color: #223;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+    position: relative;
+}
+
+.founded-book-box:hover{
+    transform: translateY(-5px);
+    border: 1px solid white;
+}
+
+/* DETAILS */
+.founded-book-details{
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    opacity: 0;
+}
+.founded-book-box:hover .founded-book-details{
+    opacity: 1;
+}
+.founded-overlay{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background-color: black;
+    opacity: 0;
+}
+.founded-book-box:hover .founded-overlay{
+    opacity: 0.6;
+}
+.founded-book-details-categories{
+display: flex;
+gap: 2px;
+}
+.founded-book-img-container{
+    width: 100%;
+    height: 80%;
+}
+.founded-book-img-container img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.founded-book-name-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+    font-size: 15px;
+    text-align: center;
+    
+}
+/* details */
+.founded-book-details div{
+margin-bottom: 20px;
+}
+.founded-book-details-view-container{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.founded-book-details-view{
+    background-color: blue;
+    padding:4px 12px ;
+    border-radius: 8px;
+}
+.founded-book-details-view:hover{
+    background-color: rgb(114, 114, 230);
+
+}
+
+
+/* ===========Categories Container */
+
+.founded-categories-text-container{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.founded-categories-text-container div{
+    background-color: rgb(32, 32, 51);
+    border-radius: 5px;
+    padding: 2px 4px;
+}
+.founded-categorie-count {
+    font-size: 15px;
+    cursor: pointer;
+    border: 1px solid rgb(61, 58, 58);
+}
+.founded-categorie-count span{
+    font-size: 13px;
+}

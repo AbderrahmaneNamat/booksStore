@@ -1,5 +1,5 @@
 export function FounderSection(){
-return`
+return `
 <div class="founders-wrapper">
   <div class="card">
     <p class="card-label">Founder</p>
@@ -7,6 +7,7 @@ return`
     <p class="card-text">
       Founder and web developer of this platform. Passionate about front-end development, UI design, and building modern, user-friendly websites.
     </p>
+  
     <p class="card-subtext">
       College: Your College Name<br />
       Field: Computer Science / Web Development
@@ -37,6 +38,5 @@ return`
     </p>
   </div>
 </div>
-
 `
 }

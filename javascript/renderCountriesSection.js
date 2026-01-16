@@ -5,7 +5,7 @@ export function renderCountriesSection(){
         <div class="polygon-bg"></div>
 
         <div class="content">
-            <h4>MOVIES BY</h4>
+            <h4>Books BY</h4>
             <h1>COUNTRIES</h1>
             <ul id="country-list"></ul>
         </div>
