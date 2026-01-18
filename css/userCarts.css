@@ -1,0 +1,239 @@
+/* =========================
+   ROOT (OPTIONAL)
+========================= */
+:root {
+  /* --primary: #c42727; */
+  /* --primary-light: #e36b6b;
+  --bg: #f8f8f8;
+  --card-bg: #ffffff;
+  --border: #e6e6e6;
+  --text-main: #222; */
+  --text-muted: #777;
+  --radius: 10px;
+}
+
+/* =========================
+   WRAPPER
+========================= */
+.usercarts-wrapper {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 25px;
+  background: var(--bg);
+  border-radius: var(--radius);
+}
+
+/* =========================
+   TABS
+========================= */
+.usercarts-wrapper .usercarts-tabs {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--border);
+}
+
+.usercarts-wrapper .tab {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  padding: 10px 0;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.usercarts-wrapper .tab.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.usercarts-wrapper .tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+/* =========================
+   VISIBILITY
+========================= */
+.usercarts-wrapper .hidden {
+  display: none;
+}
+
+.usercarts-wrapper .visible {
+  display: block;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.usercarts-wrapper .empty {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 18px;
+}
+
+/* =========================
+   CART LIST
+========================= */
+.usercarts-wrapper .cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* =========================
+   CART ITEM
+========================= */
+.usercarts-wrapper .cart-item {
+  display: grid;
+  grid-template-columns: 90px 1fr auto auto;
+  gap: 20px;
+  align-items: center;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 15px;
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.usercarts-wrapper .cart-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================
+   IMAGE
+========================= */
+.usercarts-wrapper .cart-item img {
+  width: 90px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* =========================
+   DETAILS
+========================= */
+.usercarts-wrapper .details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.usercarts-wrapper .details .title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.usercarts-wrapper .details .price {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+/* =========================
+   QUANTITY
+========================= */
+.usercarts-wrapper .quantity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fafafa;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+.usercarts-wrapper .quantity button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.usercarts-wrapper .quantity button:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.usercarts-wrapper .quantity span {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* =========================
+   DELETE BUTTONS
+========================= */
+.usercarts-wrapper .delete-cart,
+.usercarts-wrapper .delete-liked {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.usercarts-wrapper .delete-cart:hover,
+.usercarts-wrapper .delete-liked:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* =========================
+   LIKED LIST
+========================= */
+.usercarts-wrapper .liked-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.usercarts-wrapper .liked-item {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border);
+}
+
+.usercarts-wrapper .liked-item span {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 768px) {
+  .usercarts-wrapper .cart-item {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .usercarts-wrapper .cart-item img {
+    width: 100%;
+    height: 180px;
+  }
+
+  .usercarts-wrapper .quantity {
+    justify-content: space-between;
+  }
+}

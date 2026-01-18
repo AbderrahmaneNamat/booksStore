@@ -1,102 +1,264 @@
-
-
-import { products } from "./data.js";
-import { login, renderAuth } from "./login.js";
-import { ProductPage } from "./product.js";
+import { renderAuth } from "./login.js";
+import {  moinsHandler, plusHandler, ProductPage } from "./product.js";
 import { ProductsPage } from "./products.js";
 import { ul } from "./renderCountriesSection.js";
-
 import { renderHomePage } from "./renderHomePage.js";
-
 import { SliderBooks } from "./SliderBooks.js";
-import { productsSmall } from "./smallResolution/productsSmall.js";
+import { initMobileFilter } from "./smallResolution/mobileFilter.js";
+import { ReductionItemsButtonsController } from "./ReductionItemsSection.js";
+import {
+  getTimeLeftInMonth,
+  StepsHandler,
+  textLength
+} from "./NewYearReduction.js";
+import { books } from "./data.js";
+import { SearchResult } from "./SearchResult.js";
+import { UserCartsFunction, UserCartsPage } from "./UserCartsPage.js";
 
+/* =========================
+   GLOBAL STATE
+========================= */
 const app = document.getElementById("app");
+let isSearching = false;
 
-const categories = [
-  { id: 0, category: "Strategie", icon: "img1.jpg", color: "#FF6B6B" },          // red-ish for strategy
-  { id: 1, category: "Fitness", icon: "img2.jpg", color: "#4ECDC4" },            // teal for fitness
-  { id: 2, category: "Developement Personnel", icon: "img3.jpg", color: "#967f25ff" }, // yellow for personal development
-  { id: 3, category: "Programming", icon: "img4.jpg", color: "#6A4C93" },        // purple for programming
-  { id: 4, category: "Romance", icon: "img5.jpg", color: "#FFB6C1" }             // pink for romance
-];
-const bestsellingBooks = [
-  { id: 0, title: "Atomic Habits", author: "James Clear", category: "Developement Personnel", cover: "./1.jpg", color: "#FFD93D", priceInitial: 25, priceFinal: 18 },
-  { id: 1, title: "The 7 Habits of Highly Effective People", author: "Stephen R. Covey", category: "Developement Personnel", cover: "7_habits.jpg", color: "#FFD93D", priceInitial: 30, priceFinal: 22 },
-  { id: 2, title: "The Lean Startup", author: "Eric Ries", category: "Strategie", cover: "lean_startup.jpg", color: "#FF6B6B", priceInitial: 28, priceFinal: 20 },
-  { id: 3, title: "Deep Work", author: "Cal Newport", category: "Programming", cover: "deep_work.jpg", color: "#6A4C93", priceInitial: 27, priceFinal: 19 },
-  { id: 4, title: "The Da Vinci Code", author: "Dan Brown", category: "Romance", cover: "da_vinci_code.jpg", color: "#FFB6C1", priceInitial: 24, priceFinal: 17 },
-  { id: 5, title: "The Power of Habit", author: "Charles Duhigg", category: "Developement Personnel", cover: "power_of_habit.jpg", color: "#FFD93D", priceInitial: 26, priceFinal: 20 },
-  { id: 6, title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", category: "Romance", cover: "harry_potter.jpg", color: "#FFB6C1", priceInitial: 32, priceFinal: 25 },
-  { id: 7, title: "Rich Dad Poor Dad", author: "Robert Kiyosaki", category: "Strategie", cover: "rich_dad.jpg", color: "#FF6B6B", priceInitial: 29, priceFinal: 21 }
-];
+export const userCarts =
+  JSON.parse(localStorage.getItem("carts-item")) || [];
 
-
-// =====FILTERING BY CATEGORIE && UPDATETIME
-function showProducts(selectedCategory = "all", selectedTime = "all") {
-  app.innerHTML = ProductsPage(selectedCategory, selectedTime);
-  productsSmall();
-  const filterButton = document.querySelector(".filter-button");
-  if (filterButton) {
-    filterButton.addEventListener("click", () => {
-      const category = document.getElementById("categoryFilter").value;
-      const time = document.getElementById("timeFilter").value;
-      showProducts(category, time); 
-    });
-  }
+export const likedCarts =
+  JSON.parse(localStorage.getItem("carts-liked")) || [];
+/* =========================
+   STORAGE HELPERS
+========================= */
+const saveCarts = () => {
+  localStorage.setItem("carts-item", JSON.stringify(userCarts));
+};
+const saveLikeCarts=()=>{
+  localStorage.setItem("carts-liked",JSON.stringify(likedCarts))
 }
-// Render ProductsPage and attach filter listener
-function showProduct(idp) {
-  // Find the book/product by id
-  const product = products.find(book => book.id === idp);
+/* =========================
+   PRODUCTS LOGIC
+========================= */
+function showProducts(category = "all", time = "all") {
+  app.innerHTML = ProductsPage(category, time);
 
+  const filterBtn = document.querySelector(".filter-button");
+  if (!filterBtn) return;
+
+  filterBtn.addEventListener("click", () => {
+    const selectedCategory =
+      document.getElementById("categoryFilter")?.value || "all";
+    const selectedTime =
+      document.getElementById("timeFilter")?.value || "all";
+    showProducts(selectedCategory, selectedTime);
+  });
+}
+
+function showProduct(idSection) {
+  console.log(idSection)
+  const allBooks=Object.values(books).flat()
+  const product = allBooks.find(
+    (book) => book.idSection === idSection
+  );
+  console.log(allBooks)
   if (!product) {
     app.innerHTML = "<p>Product not found.</p>";
     return;
   }
 
-  // Render product page
-          app.innerHTML = ProductPage(idp)
+  app.innerHTML = ProductPage(idSection);
 }
 
+/* =========================
+   SEARCH
+========================= */
+const searchInput = document.querySelector(".search-container input");
 
-// For filter links in category dropdowns
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    const value = searchInput.value.trim();
+
+    if (value.length > 0) {
+      isSearching = true;
+      app.innerHTML = SearchResult(value);
+    } else {
+      isSearching = false;
+      router();
+    }
+  });
+}
+
+/* =========================
+   ROUTER
+========================= */
+function router() {
+  if (isSearching) return;
+
+  window.scrollTo({ top: 0, behavior: "instant" });
+  
+  const hash = window.location.hash || "#home";
+
+  if (hash.startsWith("#product/")) {
+    const idSection= hash.split("/")[1];
+    console.log(idSection)
+    showProduct(idSection);
+    moinsHandler()
+  plusHandler()
+
+    return;
+  }
+
+  if (hash.startsWith("#products")) {
+    showProducts();
+    return;
+  }
+
+  if (hash === "#carts") {
+    app.innerHTML = UserCartsPage();
+    UserCartsFunction();
+    return;
+  }
+
+  if (hash === "#login") {
+    renderAuth();
+    return;
+  }
+
+  /* ===== HOME ===== */
+  app.innerHTML = renderHomePage();
+  ul();
+  SliderBooks("third-section");
+  SliderBooks("fourth-section");
+  initMobileFilter();
+  ReductionItemsButtonsController();
+
+  document.documentElement.style.setProperty(
+    "--text-length",
+    `${textLength}ch`
+  );
+
+  StepsHandler();
+  initCountdown();
+}
+
+window.addEventListener("hashchange", router);
+window.addEventListener("load", router);
+
+/* =========================
+   COUNTDOWN TIMER
+========================= */
+function initCountdown() {
+  const pad = (n) => String(n).padStart(2, "0");
+
+  setInterval(() => {
+    const timer = document.querySelector(".timer-container");
+    if (!timer) return;
+
+    const { days, hours, minutes, seconds } =
+      getTimeLeftInMonth();
+
+    timer.innerHTML = `
+      <div class="timer">
+        ${days}<span>D</span>
+        ${pad(hours)}<span>H</span>
+        ${pad(minutes)}<span>M</span>
+        ${pad(seconds)}<span>S</span>
+      </div>
+    `;
+  }, 1000);
+}
+
+/* =========================
+   CART LISTENER
+========================= */
+document.addEventListener("click", (e) => {
+  const addBtn = e.target.closest(".add-cart");
+  if (!addBtn) return;
+
+  const idSection = addBtn.dataset.id;
+  console.log(idSection)
+  if (!idSection) return;
+
+  const allBooks = Object.values(books).flat();
+  const book = allBooks.find(
+    (b) => b.idSection === idSection
+  );
+
+  if (!book) return;
+
+  const exists = userCarts.find(
+    (item) => item.idSection === idSection
+  );
+
+  if (exists) {
+    const activeBtnExistInCart=document.querySelector(".exist-tocart")
+    if(!activeBtnExistInCart) return;
+    activeBtnExistInCart.style.display="block"
+    setTimeout(()=>{
+      activeBtnExistInCart.style.display="none"
+      
+    },1000)
+    
+    return;
+  }
+
+  userCarts.push({ ...book, quantity: 1 });
+  saveCarts();
+  console.log("Added tocart:", book);
+});
+
+/* =========================
+   GLOBAL FILTER LINK
+========================= */
 window.filterProducts = function (category) {
   window.location.hash = `#products/${category}`;
 };
 
-// Router
-function router() {
-  const hash = window.location.hash;
 
-  if (hash.startsWith("#product/")) {
-    const parts = hash.split("/"); // e.g., #products/123
-    const id = Number(parts[1]);
-    console.log(id)
-
-    // Check if id is a number or valid product id
-    if (id && id !== "all") {
-      showProduct(id); // Render single product page
-    } else {
-      showProducts(); // Render all products
+/* =========================
+   LIKE LISTENER
+========================= */
+document.addEventListener("click", (e)=>{
+  let btnLike=e.target.closest(".liked-cart")
+  if (!btnLike) return;
+  let allBooks=Object.values(books).flat()
+    const idLikedItem=e.target.dataset.id
+    if(!idLikedItem) return ;
+    const foundBook=allBooks.find((ele)=>ele.idSection === idLikedItem)
+    console.log(foundBook)
+    if(!foundBook) return;
+    const likeBookExist=likedCarts.find((ele)=>ele.idSection === idLikedItem)
+    if(likeBookExist){
+      console.log("element exist in liked Cart")
     }
+    likedCarts.push( {...foundBook})
+    saveLikeCarts()
+    
 
-  } else if (hash === "#products") {
-    showProducts();
-  } 
-   else if (hash === "#login") {
-    renderAuth()
-  }
-  else {
-    // Render slider & homepage
-    app.innerHTML=renderHomePage();
-    ul()
-    SliderBooks("third-section")
-    SliderBooks("fourth-section")
-    productsSmall()
-  }
-} 
+})
 
 
-window.addEventListener("hashchange", router);
-window.addEventListener("load", router);
+/* =========================
+   SPACESHIP LISTENER
+========================= */
+function spaceShipHandler(){
+  let spaceShip=document.querySelector(".spaceship-wrapper")
+  window.addEventListener("scroll", ()=>{
+    if(window.scrollY > innerHeight){
+      spaceShip.style.opacity=1
+    }
+    else{
+      spaceShip.style.opacity=0
+    }
+  })
+  spaceShip.addEventListener("click", (e)=>{
+    window.scrollTo(
+      {
+        top:0,
+        behavior:"smooth"
+      }
+    )
+  })
+}
+spaceShipHandler()
+
+

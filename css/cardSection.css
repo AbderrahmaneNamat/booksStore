@@ -80,9 +80,22 @@
 }
 
 /* Animated language text */
+.card-container .second-text .two{
+  position: relative;
+}
 .card-container .second-text .two::after {
-  animation: language 2s ease-in-out infinite;
-  white-space: nowrap;
+  content: " ";
+  animation: language 3s ease-in-out infinite;
+  /* white-space: nowrap; */
+  position: absolute;
+  z-index: 20;
+  right: 0;
+  bottom:-55px;
+    background: linear-gradient(135deg, #6C4AB6, #4D96FF);
+    box-shadow: 0 10px 30px rgba(77, 150, 255, 0.5);
+
+    padding: 4px 20px;
+    border-radius: 10px;
 }
 
 /* Animation */
